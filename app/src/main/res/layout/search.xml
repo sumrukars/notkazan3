@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+
+    <EditText
+        android:id="@+id/item"
+        android:layout_width="310dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Aramak İStediğiniz Ders Adını Giriniz"
+        android:inputType="textPersonName"
+        android:layout_alignBottom="@+id/ara"
+        android:layout_toLeftOf="@+id/ara"
+        android:layout_toStartOf="@+id/ara" />
+
+    <ImageView
+        android:id="@+id/ara"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="11dp"
+        android:layout_marginRight="11dp"
+        android:layout_marginTop="17dp"
+        app:srcCompat="@android:drawable/ic_search_category_default" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/post_list2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:layout_below="@+id/item"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
+
+    </android.support.v7.widget.RecyclerView>
+
+</RelativeLayout>

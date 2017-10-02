@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/cardview"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="20dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/user_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Kullanıcı Adı"
+            android:padding="15dp"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+
+
+        <ImageView
+            android:id="@+id/post_image"
+            android:layout_width="match_parent"
+            android:layout_height="135dp"
+            android:adjustViewBounds="true"
+            android:cropToPadding="false"
+            android:src="@mipmap/add_image" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Üniversite:"
+            android:textSize="10sp"
+            android:textStyle="bold|italic" />
+
+        <TextView
+            android:id="@+id/txtCardUni"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:text="Üniversite"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Bölüm:"
+            android:textSize="10sp"
+            android:textStyle="bold|italic" />
+
+        <TextView
+            android:id="@+id/txtCardDepartment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:text="Bölüm"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ders:"
+            android:textSize="10sp"
+            android:textStyle="bold|italic" />
+
+        <TextView
+            android:id="@+id/txtCardLecture"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:text="Ders"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Konu:"
+            android:textSize="10sp"
+            android:textStyle="bold|italic" />
+
+        <TextView
+            android:id="@+id/txtCardSubject"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:text="Konu"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Dönem:"
+            android:textSize="10sp"
+            android:textStyle="bold|italic" />
+
+        <TextView
+            android:id="@+id/txtCardTerm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:text="Dönem"
+            android:textSize="13sp" />
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>
