@@ -7,13 +7,13 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -35,12 +35,10 @@ public class Search extends Fragment{
 
     private TextView search ;
     private RecyclerView postList;
-    private SearchView s;
-    private EditText i;
     private String input;
     private ImageView ara;
-    DatabaseReference mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
-    private  Query query = mFirebaseDatabaseReference.child("Images").orderByChild("lecture").equalTo(input);
+    DatabaseReference mFirebaseDatabaseReference;
+    private  Query query;
 
     private  static  final String TAG="Search";
 
@@ -49,102 +47,91 @@ public class Search extends Fragment{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
        final View view = inflater.inflate(R.layout.search, container, false);
 
-         search = (TextView)view.findViewById(R.id.item);
+        search = (TextView)view.findViewById(R.id.item);
         ara = (ImageView) view.findViewById(R.id.ara);
+        mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
+        query = mFirebaseDatabaseReference.child("Images").orderByChild("lecture").equalTo(input);
+
+
+        search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                Log.i("TEXT WATCHER", "BEFORE TEXT CHANGED");
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                Log.i("TEXT WATCHER", "ON TEXT CHANGED");
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                Log.i("TEXT WATCHER", "AFTER TEXT CHANGED");
+
+                input = search.getText().toString();
+
+                //query = mFirebaseDatabaseReference.child("Images").orderByChild("lecture").equalTo(input);
+
+                query = mFirebaseDatabaseReference.child("Images").orderByChild("lecture").startAt(input).endAt(input+"\uf8ff");
+
+                query.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+
+                            Post post = postSnapshot.getValue(Post.class);
+
+                            postList = (RecyclerView) view.findViewById(R.id.post_list2);
+                            postList.setHasFixedSize(true);
+                            LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+                            mLayoutManager.setReverseLayout(true);
+                            mLayoutManager.setStackFromEnd(true);
+                            postList.setLayoutManager(mLayoutManager);
 
 
 
-        //arama işlemi
-    ara.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
+                            FirebaseRecyclerAdapter<Post, Profile.PostViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Post, Profile.PostViewHolder>(
+                                    Post.class,
+                                    R.layout.timeline_row,
+                                    Profile.PostViewHolder.class,
+                                    query
 
-            input = search.getText().toString();
+                            ) {
+                                @Override
+                                protected void populateViewHolder(Profile.PostViewHolder viewHolder, Post model, int position) {
 
-            final Query query = mFirebaseDatabaseReference.child("Images").orderByChild("lecture").equalTo(input);
+                                    viewHolder.setUniversity(model.getUniversity());
+                                    viewHolder.setDepartment(model.getDepartment());
+                                    viewHolder.setLecture(model.getLecture());
+                                    viewHolder.setSubject(model.getSubject());
+                                    viewHolder.setTerm(model.getTerm());
+                                    viewHolder.setUserName(model.getUsername());
+                                    viewHolder.setImage(getActivity().getApplicationContext(), model.getImage());
 
-
-            query.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-
-
-                        postList = (RecyclerView) view.findViewById(R.id.post_list2);
-                        postList.setHasFixedSize(true);
-                        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
-                        mLayoutManager.setReverseLayout(true);
-                        mLayoutManager.setStackFromEnd(true);
-                        postList.setLayoutManager(mLayoutManager);
-
-
-
-                        FirebaseRecyclerAdapter<Post, Profile.PostViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Post, Profile.PostViewHolder>(
-                                Post.class,
-                                R.layout.timeline_row,
-                                Profile.PostViewHolder.class,
-                                query
-
-                        ) {
-                            @Override
-                            protected void populateViewHolder(Profile.PostViewHolder viewHolder, Post model, int position) {
-                                final String key = getRef(position).getKey();
-
-                                viewHolder.setUniversity(model.getUniversity());
-                                viewHolder.setDepartment(model.getDepartment());
-                                viewHolder.setLecture(model.getLecture());
-                                viewHolder.setSubject(model.getSubject());
-                                viewHolder.setTerm(model.getTerm());
-                                viewHolder.setUserName(model.getUsername());
-                                viewHolder.setImage(getActivity().getApplicationContext(), model.getImage());
-
-                                viewHolder.view.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-
-                                        Intent i = new Intent(getActivity(), ShowPost.class);
-                                        i.putExtra("key", key);
-                                        startActivity(i);
-
-                                        // Toast.makeText(getActivity(), key, Toast.LENGTH_LONG).show();
-                                    }
-                                });
-
-                            }
-                        };
-
-                        postList.setAdapter(firebaseRecyclerAdapter);
-
+                                    viewHolder.view.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            Intent i = new Intent(getActivity(), ShowPost.class);
+                                            startActivity(i);
+                                        }
+                                    });
+                                }
+                            };
+                            postList.setAdapter(firebaseRecyclerAdapter);
+                        }
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
                     }
+                });
+            }
 
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-
-
-        }
-    });
-
-
-
+        });
 
 
         return view;
     }
-
-
-
-
-
-
-
-
-
 
 
     public static class PostViewHolder extends RecyclerView.ViewHolder {
@@ -193,8 +180,6 @@ public class Search extends Fragment{
             Picasso.with(ctx).load(image).into(post_image);
 
         }
-
-
     }
 
 }
