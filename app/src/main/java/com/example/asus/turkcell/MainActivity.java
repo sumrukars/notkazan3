@@ -103,11 +103,10 @@ public class MainActivity extends AppCompatActivity {
                 progress.setMessage("Giriş Yapılıyor...");
                 progress.show();
 
-//                String email = inputEmail.getText().toString();
-//                String password = inputPassword.getText().toString();
+                String email = inputEmail.getText().toString();
+                String password = inputPassword.getText().toString();
 
-                String email = "ozenc.celik@ceng.deu.edu.tr";
-                final String password = "123456";//Düzenlenmesi gerekiyor. Kullanıcı iki farklı şifreli hesapla uygulamaya giriş yapamaz.
+              
 
                 if(TextUtils.isEmpty(email)){
                     progress.dismiss();

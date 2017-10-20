@@ -100,6 +100,8 @@ public class Search extends Fragment{
                                 @Override
                                 protected void populateViewHolder(Profile.PostViewHolder viewHolder, Post model, int position) {
 
+                                    final String key = getRef(position).getKey();
+
                                     viewHolder.setUniversity(model.getUniversity());
                                     viewHolder.setDepartment(model.getDepartment());
                                     viewHolder.setLecture(model.getLecture());
@@ -112,6 +114,7 @@ public class Search extends Fragment{
                                         @Override
                                         public void onClick(View v) {
                                             Intent i = new Intent(getActivity(), ShowPost.class);
+                                            i.putExtra("key", key);
                                             startActivity(i);
                                         }
                                     });
