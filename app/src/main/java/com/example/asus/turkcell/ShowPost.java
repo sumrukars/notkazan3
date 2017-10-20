@@ -23,7 +23,7 @@ public class ShowPost extends AppCompatActivity {
     private String adres;
     private String username;
     private TextView usrnameText;
-    private Button gotoprof;
+    private Button gotoprof, notAl;
     private FirebaseUser currentUser;
     private FirebaseAuth auth;
 
@@ -39,6 +39,7 @@ public class ShowPost extends AppCompatActivity {
         gotoprof= (Button)findViewById(R.id.gotoprof);
         imageView = (ZoomableImageView) findViewById(R.id.img_post);
         imageView.setImageBitmap(bitmap);
+        notAl = (Button)findViewById(R.id.notal);
 
         key = getIntent().getExtras().getString("key");
         final TextView usrnameText= (TextView) findViewById(R.id.user_name);
@@ -63,8 +64,7 @@ public class ShowPost extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
 
-                        startActivity(new Intent(ShowPost.this, EditActivity.class));
-                        /*
+
                         if(currentUser.getUid().equals(uid)){
                             Intent i=new Intent(ShowPost.this, Home.class);
                             startActivity(i);
@@ -73,9 +73,15 @@ public class ShowPost extends AppCompatActivity {
                             Intent i=new Intent(ShowPost.this, FriendProfile.class);
                             i.putExtra("key", key);
                             startActivity(i);
-                        }*/
+                        }
 
 
+                    }
+                });
+                notAl.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        startActivity(new Intent(ShowPost.this, EditActivity.class));
                     }
                 });
             }
